@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CASE 002 — THE INTERNET FILES</title>
+
+<meta name="description" content="THE INTERNET FILES Case 002: When Communities Went Dark. An investigation into Reddit's 2023 API protest.">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #080808;
+    color: #eeeeee;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.7;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 1050px;
+    margin: auto;
+}
+
+header {
+    border-bottom: 1px solid #252525;
+    padding: 22px 0;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+nav a {
+    color: #999;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+nav a:hover {
+    color: white;
+}
+
+.hero {
+    padding: 95px 0 75px;
+    border-bottom: 1px solid #252525;
+}
+
+.label {
+    color: #888;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 7vw, 72px);
+    line-height: 1.05;
+    margin: 22px 0;
+    letter-spacing: -2px;
+}
+
+.hero h1 span {
+    color: #999;
+}
+
+.subtitle {
+    color: #aaa;
+    font-size: 17px;
+    max-width: 650px;
+}
+
+.metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+    margin-top: 40px;
+}
+
+.metadata div {
+    color: #888;
+    font-size: 12px;
+}
+
+.metadata strong {
+    display: block;
+    color: #eee;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+section {
+    padding: 65px 0;
+    border-bottom: 1px solid #252525;
+}
+
+.section-title {
+    font-size: 25px;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+p {
+    color: #aaa;
+    margin-bottom: 18px;
+    max-width: 850px;
+}
+
+.highlight {
+    border-left: 3px solid #888;
+    padding: 20px 25px;
+    background: #111;
+    margin: 30px 0;
+}
+
+.highlight p {
+    margin: 0;
+    color: #ddd;
+}
+
+.timeline {
+    border-left: 1px solid #444;
+    margin-left: 8px;
+    padding-left: 28px;
+}
+
+.event {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.event::before {
+    content: "";
+    position: absolute;
+    left: -34px;
+    top: 8px;
+    width: 11px;
+    height: 11px;
+    background: #aaa;
+    border-radius: 50%;
+}
+
+.event time {
+    display: block;
+    color: #eee;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.event p {
+    margin: 0;
+}
+
+.evidence-card {
+    background: #101010;
+    border: 1px solid #292929;
+    padding: 25px;
+    margin-bottom: 16px;
+}
+
+.evidence-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.evidence-card p {
+    font-size: 14px;
+}
+
+.source-link {
+    display: inline-block;
+    color: #ddd;
+    border-bottom: 1px solid #777;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.source-link:hover {
+    color: white;
+    border-color: white;
+}
+
+.tag {
+    display: inline-block;
+    color: #aaa;
+    border: 1px solid #444;
+    padding: 3px 9px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.finding {
+    margin-bottom: 25px;
+}
+
+.finding h3 {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.status {
+    display: inline-block;
+    padding: 7px 12px;
+    border: 1px solid #555;
+    color: #ddd;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.disclaimer {
+    font-size: 12px;
+    color: #777;
+    margin-top: 20px;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 20px;
+    border: 1px solid #555;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.back:hover {
+    background: white;
+    color: black;
+}
+
+footer {
+    padding: 35px 0;
+    text-align: center;
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding: 65px 0 50px;
+    }
+
+    nav {
+        gap: 12px;
+    }
+
+    .metadata {
+        gap: 20px;
+    }
+
+    section {
+        padding: 45px 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <a href="index.html" class="logo">THE INTERNET FILES.</a>
+
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="index.html#cases">CASES</a>
+            <a href="index.html#about">ABOUT</a>
+            <a href="contact.html">CONTACT</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<div class="container">
+
+    <!-- CASE INTRODUCTION -->
+
+    <div class="hero">
+        <div class="label">THE INTERNET FILES / INVESTIGATION 002</div>
+
+        <h1>WHEN COMMUNITIES<br><span>WENT DARK.</span></h1>
+
+        <p class="subtitle">
+            An investigation into Reddit's 2023 API pricing
+            controversy, the communities that protested, and
+            the conflict between platform control and community power.
+        </p>
+
+        <div class="metadata">
+            <div>
+                CASE NUMBER
+                <strong>002</strong>
+            </div>
+
+            <div>
+                CATEGORY
+                <strong>Digital History</strong>
+            </div>
+
+            <div>
+                EVENT DATE
+                <strong>June 2023</strong>
+            </div>
+
+            <div>
+                STATUS
+                <strong>Published investigation</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERVIEW -->
+
+    <section>
+        <div class="label">01 / OVERVIEW</div>
+        <h2 class="section-title">THE STORY.</h2>
+
+        <p>
+            In 2023, Reddit announced changes to the way developers
+            could access its application programming interface,
+            commonly known as an API.
+        </p>
+
+        <p>
+            An API allows outside applications and services to
+            communicate with a platform. Reddit's API supported
+            third-party applications, moderation tools, and other
+            community services.
+        </p>
+
+        <p>
+            The announced pricing changes caused significant
+            disagreement among developers, moderators, and users.
+            Many feared that the new costs would make popular
+            third-party applications financially unsustainable.
+        </p>
+
+        <p>
+            On June 12, 2023, thousands of Reddit communities
+            began restricting access or going private as part
+            of a coordinated protest.
+        </p>
+
+        <div class="highlight">
+            <p>
+                The central question: How did a disagreement
+                about API access become a platform-wide community
+                protest?
+            </p>
+        </div>
+    </section>
+
+    <!-- BACKGROUND -->
+
+    <section>
+        <div class="label">02 / BACKGROUND</div>
+        <h2 class="section-title">UNDERSTANDING THE API CHANGES.</h2>
+
+        <p>
+            Reddit announced its API changes on April 18, 2023.
+            The changes introduced a pricing structure for
+            applications making large-scale API requests.
+        </p>
+
+        <p>
+            Reddit argued that providing large-scale API access
+            created infrastructure and opportunity costs, and
+            that commercial services using substantial amounts
+            of its data should contribute financially.
+        </p>
+
+        <p>
+            Developers of third-party applications raised
+            concerns about the proposed costs, the short
+            implementation timeline, and the future of their
+            products.
+        </p>
+
+        <p>
+            Reddit later stated that certain non-commercial
+            moderation tools and qualifying accessibility
+            applications would continue to receive access
+            under specified arrangements.
+        </p>
+    </section>
+
+    <!-- TIMELINE -->
+
+    <section>
+        <div class="label">03 / EVENT RECORD</div>
+        <h2 class="section-title">THE TIMELINE.</h2>
+
+        <div class="timeline">
+
+            <div class="event">
+                <time>APRIL 18, 2023</time>
+                <p>
+                    Reddit announces upcoming changes to its
+                    API access policies.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>MAY 31, 2023</time>
+                <p>
+                    Reddit publishes additional API updates,
+                    including information about moderator
+                    access and enterprise-level pricing.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>JUNE 8, 2023</time>
+                <p>
+                    News coverage reports that thousands of
+                    communities are planning to participate
+                    in a blackout beginning June 12.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>JUNE 9, 2023</time>
+                <p>
+                    Reddit CEO Steve Huffman addresses
+                    community questions in an AMA while
+                    opposition to the API changes continues.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>JUNE 12, 2023</time>
+                <p>
+                    The coordinated Reddit blackout begins.
+                    Communities restrict access or switch
+                    to private mode.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>JUNE 15, 2023</time>
+                <p>
+                    Reddit publishes an explanation of its
+                    API updates and its position on the
+                    controversy.
+                </p>
+            </div>
+
+            <div class="event">
+                <time>JUNE 30, 2023</time>
+                <p>
+                    Reddit publishes further information
+                    about API rate limits and implementation.
+                </p>
+            </div>
+
+        </div>
+
+        <p class="disclaimer">
+            Timeline dates are based on published announcements
+            and reporting. The blackout did not end simultaneously
+            for every participating community.
+        </p>
+    </section>
+
+    <!-- EVIDENCE -->
+
+    <section>
+        <div class="label">04 / DOCUMENTATION</div>
+        <h2 class="section-title">EVIDENCE ARCHIVE.</h2>
+
+        <div class="evidence-card">
+            <span class="tag">PRIMARY SOURCE</span>
+            <h3>Evidence 001 — Reddit's API announcement</h3>
+
+            <p>
+                Reddit's official explanation of its API
+                pricing changes and the company's reasoning.
+            </p>
+
+            <a class="source-link"
+               href="https://redditinc.com/news/apifacts"
+               target="_blank"
+               rel="noopener noreferrer">
+                VIEW OFFICIAL DOCUMENT →
+            </a>
+        </div>
+
+        <div class="evidence-card">
+            <span class="tag">SECONDARY SOURCE</span>
+            <h3>Evidence 002 — TechCrunch reporting</h3>
+
+            <p>
+                Reporting on the communities participating
+                in the blackout and the disagreement over
+                API pricing.
+            </p>
+
+            <a class="source-link"
+               href="https://techcrunch.com/2023/06/12/reddit-blackout-8000-subreddits-went-dark-protest-api/"
+               target="_blank"
+               rel="noopener noreferrer">
+                VIEW REPORT →
+            </a>
+        </div>
+
+        <div class="evidence-card">
+            <span class="tag">SECONDARY SOURCE</span>
+            <h3>Evidence 003 — Reddit CEO's AMA</h3>
+
+            <p>
+                Reporting on Steve Huffman's June 9
+                response to community questions and criticism.
+            </p>
+
+            <a class="source-link"
+               href="https://techcrunch.com/2023/06/09/reddit-ceo-doubles-down-on-attack-on-apollo-developer-in-drama-filled-ama/"
+               target="_blank"
+               rel="noopener noreferrer">
+                VIEW REPORT →
+            </a>
+        </div>
+
+        <div class="evidence-card">
+            <span class="tag">RESEARCH DATASET</span>
+            <h3>Evidence 004 — University research archive</h3>
+
+            <p>
+                A research dataset documenting pinned
+                announcements from 5,351 subreddits
+                around June 11 and June 12, 2023.
+            </p>
+
+            <a class="source-link"
+               href="https://datadryad.org/dataset/doi:10.5061/dryad.qfttdz0qd"
+               target="_blank"
+               rel="noopener noreferrer">
+                VIEW RESEARCH DATASET →
+            </a>
+        </div>
+
+    </section>
+
+    <!-- FINDINGS -->
+
+    <section>
+        <div class="label">05 / INVESTIGATION</div>
+        <h2 class="section-title">KEY FINDINGS.</h2>
+
+        <div class="finding">
+            <h3>01 — API access supported more than browsing.</h3>
+            <p>
+                Third-party applications and moderation tools
+                depended on API access for functions beyond
+                simply viewing Reddit posts.
+            </p>
+        </div>
+
+        <div class="finding">
+            <h3>02 — The pricing changes created widespread opposition.</h3>
+            <p>
+                Developers, moderators, and users raised
+                concerns about application costs, accessibility,
+                moderation, and the future of independent tools.
+            </p>
+        </div>
+
+        <div class="finding">
+            <h3>03 — Communities used their own access as leverage.</h3>
+            <p>
+                Participating moderators and communities
+                restricted access to demonstrate opposition
+                to the proposed changes.
+            </p>
+        </div>
+
+        <div class="finding">
+            <h3>04 — Reddit maintained its position on API pricing.</h3>
+            <p>
+                Reddit publicly defended its decision and
+                described the financial and infrastructure
+                reasons behind its policy.
+            </p>
+        </div>
+
+        <p class="disclaimer">
+            These findings summarize the cited sources.
+            They do not establish that every participating
+            community shared the same motivations.
+        </p>
+    </section>
+
+    <!-- CONCLUSION -->
+
+    <section>
+        <div class="label">06 / CONCLUSION</div>
+        <h2 class="section-title">THE BIGGER PICTURE.</h2>
+
+        <p>
+            The Reddit blackout demonstrated how dependent
+            online communities can become on the platforms
+            that host them.
+        </p>
+
+        <p>
+            It also showed that decisions about technical
+            infrastructure can affect developers, moderators,
+            accessibility, and ordinary users.
+        </p>
+
+        <p>
+            Reddit's API controversy was not simply a dispute
+            about pricing. It became a wider disagreement
+            about platform governance, community influence,
+            and who controls the tools that make online
+            communities function.
+        </p>
+
+        <div class="highlight">
+            <p>
+                CASE 002 documents a major moment in digital
+                community history: a platform policy change
+                that led thousands of online communities
+                to collectively restrict access in protest.
+            </p>
+        </div>
+
+        <div class="status">CASE 002 — INVESTIGATION PUBLISHED</div>
+    </section>
+
+    <!-- DISCLAIMER -->
+
+    <section>
+        <div class="label">07 / EDITORIAL NOTICE</div>
+        <h2 class="section-title">ABOUT THIS INVESTIGATION.</h2>
+
+        <p>
+            THE INTERNET FILES is an independent research
+            and documentation project.
+        </p>
+
+        <p>
+            This investigation uses publicly available
+            reporting, company statements, and research
+            materials. Interpretations are identified as
+            analysis rather than presented as independently
+            established facts.
+        </p>
+
+        <p>
+            Sources are provided for readers to review
+            the original material and form their own
+            conclusions.
+        </p>
+
+        <a href="index.html" class="back">
+            ← RETURN TO THE INTERNET FILES
+        </a>
+    </section>
+
+</div>
+</main>
+
+<footer>
+    <div class="container">
+        THE INTERNET FILES © 2026 · INDEPENDENT DIGITAL INVESTIGATIONS
+    </div>
+</footer>
+
+</body>
+</html>
