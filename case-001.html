@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="THE INTERNET FILES Case 001 investigates the October 4, 2021 Meta global outage.">
+<title>Case 001 — The Day Meta Went Dark | THE INTERNET FILES</title>
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior:smooth; }
+
+body {
+    background:#080808;
+    color:#ededed;
+    font-family:Arial,Helvetica,sans-serif;
+    line-height:1.7;
+}
+
+a { color:inherit; }
+
+header {
+    height:76px;
+    padding:0 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #292929;
+    background:#090909;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo {
+    font-size:17px;
+    font-weight:bold;
+    letter-spacing:3px;
+    text-decoration:none;
+}
+
+nav { display:flex; gap:25px; }
+
+nav a {
+    color:#999;
+    font-size:11px;
+    text-decoration:none;
+    letter-spacing:1px;
+}
+
+nav a:hover { color:white; }
+
+.hero {
+    min-height:490px;
+    padding:100px 10%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    background:
+    radial-gradient(ellipse at 75% 40%,#252525 0%,#111 35%,#080808 75%);
+    border-bottom:1px solid #292929;
+}
+
+.eyebrow {
+    color:#999;
+    letter-spacing:4px;
+    font-size:11px;
+    margin-bottom:20px;
+}
+
+.hero h1 {
+    font-size:clamp(42px,7vw,78px);
+    line-height:1.05;
+    letter-spacing:-3px;
+    max-width:850px;
+}
+
+.hero p {
+    max-width:620px;
+    color:#aaa;
+    margin-top:25px;
+    font-size:15px;
+}
+
+.metadata {
+    display:flex;
+    flex-wrap:wrap;
+    gap:25px;
+    margin-top:35px;
+    color:#999;
+    font-size:11px;
+}
+
+.status {
+    border:1px solid #777;
+    padding:5px 10px;
+    color:#ddd;
+}
+
+.container {
+    width:80%;
+    max-width:1050px;
+    margin:auto;
+}
+
+section {
+    padding:75px 0;
+    border-bottom:1px solid #252525;
+    scroll-margin-top:85px;
+}
+
+.section-label {
+    color:#777;
+    font-size:10px;
+    letter-spacing:3px;
+    margin-bottom:13px;
+}
+
+h2 {
+    font-size:30px;
+    letter-spacing:-1px;
+    margin-bottom:22px;
+}
+
+h3 {
+    font-size:18px;
+    margin-bottom:12px;
+}
+
+p {
+    color:#aaa;
+    margin-bottom:17px;
+}
+
+.lead {
+    color:#ccc;
+    font-size:17px;
+    max-width:850px;
+}
+
+.notice {
+    margin-top:25px;
+    border-left:2px solid #888;
+    background:#121212;
+    padding:20px;
+    color:#aaa;
+    font-size:13px;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+    margin-top:30px;
+}
+
+.card {
+    background:#111;
+    border:1px solid #292929;
+    padding:25px;
+    border-radius:4px;
+}
+
+.card p { margin:0; font-size:13px; }
+
+.number {
+    font-size:11px;
+    color:#777;
+    letter-spacing:2px;
+    margin-bottom:13px;
+}
+
+.timeline {
+    border-left:1px solid #555;
+    margin:35px 0 0 10px;
+    padding-left:30px;
+}
+
+.event {
+    position:relative;
+    padding-bottom:35px;
+}
+
+.event::before {
+    content:"";
+    position:absolute;
+    left:-36px;
+    top:8px;
+    width:10px;
+    height:10px;
+    background:#ddd;
+    border-radius:50%;
+}
+
+.time {
+    color:#ddd;
+    font-size:12px;
+    letter-spacing:1px;
+    font-weight:bold;
+}
+
+.event p {
+    font-size:13px;
+    margin-top:8px;
+}
+
+.diagram {
+    background:#111;
+    border:1px solid #303030;
+    padding:25px;
+    margin:25px 0;
+    text-align:center;
+}
+
+.diagram-row {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.node {
+    padding:14px 17px;
+    border:1px solid #555;
+    background:#191919;
+    font-size:12px;
+}
+
+.arrow { color:#888; }
+
+.source {
+    border:1px solid #292929;
+    background:#111;
+    padding:22px;
+    margin-bottom:12px;
+    border-radius:4px;
+}
+
+.source a {
+    color:#ddd;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.source a:hover { text-decoration:underline; }
+
+.source small {
+    display:block;
+    color:#777;
+    margin-top:5px;
+}
+
+.source p {
+    font-size:13px;
+    margin:10px 0 0;
+}
+
+.finding {
+    padding:20px 0;
+    border-bottom:1px solid #292929;
+}
+
+.finding strong { color:#ddd; }
+
+.finding p { margin:7px 0 0; }
+
+.conclusion {
+    background:#111;
+    padding:30px;
+    border:1px solid #333;
+    margin-top:25px;
+}
+
+.disclaimer {
+    color:#777;
+    font-size:12px;
+    background:#101010;
+    padding:20px;
+    margin-top:25px;
+}
+
+footer {
+    padding:40px 10%;
+    text-align:center;
+    color:#666;
+    font-size:11px;
+}
+
+footer a { color:#aaa; }
+
+@media(max-width:650px) {
+    header {
+        height:auto;
+        padding:20px;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    nav {
+        gap:13px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    nav a { font-size:10px; }
+
+    .hero { padding:75px 7%; }
+    .container { width:88%; }
+    .grid { grid-template-columns:1fr; }
+    h2 { font-size:25px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html" class="logo">THE INTERNET FILES.</a>
+
+    <nav>
+        <a href="index.html">HOME</a>
+        <a href="#overview">OVERVIEW</a>
+        <a href="#timeline">TIMELINE</a>
+        <a href="#findings">FINDINGS</a>
+        <a href="#sources">SOURCES</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+
+<div class="hero">
+    <div class="eyebrow">THE INTERNET FILES / INVESTIGATION 001</div>
+
+    <h1>THE DAY META<br>WENT DARK.</h1>
+
+    <p>
+        On October 4, 2021, some of the world's most widely
+        used online platforms suddenly became inaccessible.
+        What happened, and how did a network configuration
+        failure affect millions of people?
+    </p>
+
+    <div class="metadata">
+        <span>FILE #001</span>
+        <span>OCTOBER 4, 2021</span>
+        <span>DIGITAL HISTORY</span>
+        <span class="status">DOCUMENTED CASE</span>
+    </div>
+</div>
+
+<main class="container">
+
+<!-- OVERVIEW -->
+
+<section id="overview">
+    <div class="section-label">01 / CASE OVERVIEW</div>
+    <h2>What happened?</h2>
+
+    <p class="lead">
+        On October 4, 2021, Facebook, Instagram, WhatsApp
+        and other Meta services experienced a widespread
+        global outage lasting several hours.
+    </p>
+
+    <p>
+        Users around the world were unable to reliably
+        access the affected services. The outage also
+        disrupted Meta's internal systems, making it more
+        difficult for engineers to diagnose and resolve
+        the problem.
+    </p>
+
+    <p>
+        Meta's subsequent engineering investigation
+        identified an accidental configuration change
+        affecting its global backbone network as the
+        underlying cause.
+    </p>
+
+    <div class="notice">
+        <strong>IMPORTANT DISTINCTION</strong><br>
+        The available technical evidence supports an
+        accidental network configuration failure.
+        This investigation does not establish that a
+        cyberattack caused the incident.
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="number">AFFECTED SERVICES</div>
+            <h3>Multiple platforms</h3>
+            <p>
+                Facebook, Instagram, WhatsApp and other
+                Meta services were affected.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="number">DATE</div>
+            <h3>October 4, 2021</h3>
+            <p>
+                The incident began at approximately
+                15:40 UTC according to network observations.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="number">PRIMARY CAUSE</div>
+            <h3>Network configuration</h3>
+            <p>
+                An accidental change disrupted
+                Meta's global backbone network.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="number">RECOVERY</div>
+            <h3>Several hours</h3>
+            <p>
+                Services returned gradually after
+                engineers restored network connectivity.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- TIMELINE -->
+
+<section id="timeline">
+    <div class="section-label">02 / INCIDENT CHRONOLOGY</div>
+    <h2>The timeline</h2>
+
+    <p>
+        The following timeline combines Meta's technical
+        account with independent network observations.
+        All times are UTC and approximate.
+    </p>
+
+    <div class="timeline">
+
+        <div class="event">
+            <div class="time">15:40 — NETWORK CHANGES</div>
+            <p>
+                Cloudflare observed a major increase in
+                routing changes originating from Facebook's
+                network. Meta later identified the beginning
+                of the incident with a backbone capacity
+                maintenance command.
+            </p>
+        </div>
+
+        <div class="event">
+            <div class="time">15:51 — OUTAGE DETECTED</div>
+            <p>
+                Cloudflare opened an internal incident after
+                observing DNS lookup failures affecting
+                Facebook.
+            </p>
+        </div>
+
+        <div class="event">
+            <div class="time">15:58 — DNS ROUTES WITHDRAWN</div>
+            <p>
+                Cloudflare observed Facebook's DNS prefixes
+                disappearing from global routing tables.
+                External networks could no longer reliably
+                reach Facebook's DNS infrastructure.
+            </p>
+        </div>
+
+        <div class="event">
+            <div class="time">DURING THE OUTAGE — RECOVERY WORK</div>
+            <p>
+                Meta engineers experienced difficulties
+                accessing normal internal tools and network
+                management systems. Engineers were sent
+                onsite to help restore connectivity.
+            </p>
+        </div>
+
+        <div class="event">
+            <div class="time">21:00–21:20 — ROUTING RETURNS</div>
+            <p>
+                Cloudflare observed renewed BGP activity,
+                followed by Facebook DNS becoming available
+                again around 21:20 UTC.
+            </p>
+        </div>
+
+        <div class="event">
+            <div class="time">22:45 — BROADER REACHABILITY</div>
+            <p>
+                ThousandEyes reported that Facebook,
+                Instagram and WhatsApp had been offline
+                globally for more than seven hours, using
+                its broader application-reachability
+                observations.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="notice">
+        Timeline note: DNS recovery and full application
+        availability are different measurements. The
+        timestamps above should not be interpreted as
+        meaning every user regained access simultaneously.
+    </div>
+</section>
+
+<!-- TECHNICAL EXPLANATION -->
+
+<section id="technical">
+    <div class="section-label">03 / TECHNICAL ANALYSIS</div>
+    <h2>Why did it happen?</h2>
+
+    <p>
+        Meta's global backbone network connects its
+        computing facilities and data centers. During
+        routine maintenance, a command intended to assess
+        available network capacity unintentionally
+        disconnected backbone connections.
+    </p>
+
+    <p>
+        Meta explained that a bug in an internal auditing
+        tool prevented the command from being stopped
+        as intended.
+    </p>
+
+    <div class="diagram">
+        <div class="number">SIMPLIFIED INCIDENT FLOW</div>
+
+        <div class="diagram-row">
+            <div class="node">Maintenance command</div>
+            <span class="arrow">→</span>
+            <div class="node">Backbone disruption</div>
+        </div>
+
+        <div style="padding:13px;color:#888">↓</div>
+
+        <div class="diagram-row">
+            <div class="node">DNS / BGP disruption</div>
+            <span class="arrow">→</span>
+            <div class="node">Services unreachable</div>
+        </div>
+
+        <div style="padding:13px;color:#888">↓</div>
+
+        <div class="diagram-row">
+            <div class="node">Engineering recovery</div>
+            <span class="arrow">→</span>
+            <div class="node">Services restored</div>
+        </div>
+    </div>
+
+    <h3>Understanding DNS</h3>
+
+    <p>
+        DNS stands for Domain Name System. It translates
+        readable website names into the IP addresses
+        computers use to connect to services.
+    </p>
+
+    <h3>Understanding BGP</h3>
+
+    <p>
+        BGP stands for Border Gateway Protocol. It allows
+        independent networks to exchange routing
+        information about how traffic should reach
+        different destinations.
+    </p>
+
+    <p>
+        During the incident, Meta's DNS servers withdrew
+        their BGP advertisements after losing connectivity
+        to the company's data centers. This made those
+        DNS servers unreachable from the wider internet.
+    </p>
+</section>
+
+<!-- FINDINGS -->
+
+<section id="findings">
+    <div class="section-label">04 / VERIFIED FINDINGS</div>
+    <h2>What the evidence establishes</h2>
+
+    <div class="finding">
+        <strong>FINDING 001 — Global service disruption</strong>
+        <p>
+            Multiple Meta services became inaccessible
+            across the world on October 4, 2021.
+        </p>
+    </div>
+
+    <div class="finding">
+        <strong>FINDING 002 — Internal configuration failure</strong>
+        <p>
+            Meta attributed the incident to a faulty
+            configuration change affecting its backbone
+            routers.
+        </p>
+    </div>
+
+    <div class="finding">
+        <strong>FINDING 003 — Auditing tool failure</strong>
+        <p>
+            Meta reported that a bug in its internal
+            auditing tool failed to prevent the problematic
+            maintenance command.
+        </p>
+    </div>
+
+    <div class="finding">
+        <strong>FINDING 004 — DNS and BGP consequences</strong>
+        <p>
+            Independent network observations documented
+            route withdrawals and DNS failures during
+            the outage.
+        </p>
+    </div>
+
+    <div class="finding">
+        <strong>FINDING 005 — Difficult recovery</strong>
+        <p>
+            Meta reported that the outage also affected
+            internal tools and network access, requiring
+            engineers to work onsite at data centers.
+        </p>
+    </div>
+
+    <div class="finding">
+        <strong>FINDING 006 — Data security statement</strong>
+        <p>
+            Meta stated that it had no evidence that
+            user data was compromised as a result
+            of the downtime.
+        </p>
+    </div>
+
+    <div class="conclusion">
+        <div class="number">FINAL CONCLUSION</div>
+        <h3>An infrastructure failure, not a confirmed attack.</h3>
+
+        <p>
+            The available evidence supports Meta's
+            explanation of an accidental configuration
+            failure that disrupted its global network.
+        </p>
+
+        <p>
+            The incident demonstrates how interconnected
+            infrastructure can create widespread service
+            disruptions when critical network systems fail.
+        </p>
+
+        <p>
+            No evidence in the sources reviewed establishes
+            that malicious activity caused the outage.
+        </p>
+    </div>
+</section>
+
+<!-- EVIDENCE -->
+
+<section id="sources">
+    <div class="section-label">05 / DOCUMENTATION</div>
+    <h2>Evidence & source archive</h2>
+
+    <p>
+        The following documents were used to research
+        this investigation. Primary sources are
+        distinguished from independent analysis.
+    </p>
+
+    <div class="source">
+        <div class="number">SOURCE 001 / PRIMARY</div>
+        <a href="https://engineering.fb.com/2021/10/04/networking-traffic/outage/"
+           target="_blank" rel="noopener noreferrer">
+           Meta — Update about the October 4th outage ↗
+        </a>
+        <small>October 4, 2021 · Meta Engineering</small>
+        <p>
+            Meta's initial public explanation and
+            acknowledgement of the disruption.
+        </p>
+    </div>
+
+    <div class="source">
+        <div class="number">SOURCE 002 / PRIMARY</div>
+        <a href="https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/"
+           target="_blank" rel="noopener noreferrer">
+           Meta — More details about the October 4 outage ↗
+        </a>
+        <small>October 5, 2021 · Meta Engineering</small>
+        <p>
+            Detailed explanation of the backbone network,
+            maintenance command, auditing tool and recovery.
+        </p>
+    </div>
+
+    <div class="source">
+        <div class="number">SOURCE 003 / INDEPENDENT TECHNICAL ANALYSIS</div>
+        <a href="https://blog.cloudflare.com/october-2021-facebook-outage/"
+           target="_blank" rel="noopener noreferrer">
+           Cloudflare — Understanding how Facebook disappeared from the Internet ↗
+        </a>
+        <small>October 4, 2021 · Cloudflare</small>
+        <p>
+            Independent observations of BGP withdrawals,
+            DNS failures and network recovery.
+        </p>
+    </div>
+
+    <div class="source">
+        <div class="number">SOURCE 004 / INDEPENDENT TECHNICAL ANALYSIS</div>
+        <a href="https://www.thousandeyes.com/blog/facebook-outage-analysis"
+           target="_blank" rel="noopener noreferrer">
+           ThousandEyes — Facebook Outage Analysis ↗
+        </a>
+        <small>October 2021 · ThousandEyes</small>
+        <p>
+            Independent application availability and
+            network measurements.
+        </p>
+    </div>
+
+    <div class="source">
+        <div class="number">SOURCE 005 / JOURNALISM</div>
+        <a href="https://www.investing.com/news/stock-market-news/facebook-says-root-cause-of-outage-was-faulty-configuration-change-2634591"
+           target="_blank" rel="noopener noreferrer">
+           Reuters — Facebook says root cause of outage was faulty configuration change ↗
+        </a>
+        <small>October 4, 2021 · Reuters</small>
+        <p>
+            Independent reporting on Meta's explanation
+            and the impact of the outage.
+        </p>
+    </div>
+</section>
+
+<!-- DISCLAIMER -->
+
+<section id="disclaimer">
+    <div class="section-label">06 / EDITORIAL INFORMATION</div>
+    <h2>About this investigation</h2>
+
+    <p>
+        This investigation was prepared by THE INTERNET
+        FILES using publicly available documents,
+        technical analysis and independent reporting.
+    </p>
+
+    <p>
+        Findings are based on the sources listed above.
+        Statements made by Meta are attributed to Meta.
+        Independent observations are identified separately.
+    </p>
+
+    <div class="disclaimer">
+        <strong>DISCLAIMER</strong><br><br>
+
+        THE INTERNET FILES is an independent
+        investigative project and is not affiliated
+        with, endorsed by or operated by Meta Platforms, Inc.
+
+        This publication is for informational and
+        educational purposes. It distinguishes documented
+        facts from interpretations and unresolved questions.
+
+        All trademarks and company names belong to their
+        respective owners.
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div style="font-size:15px;letter-spacing:3px;color:#ddd;font-weight:bold">
+        THE INTERNET FILES.
+    </div>
+
+    <p style="margin-top:12px">
+        INDEPENDENT INTERNET INVESTIGATIONS
+    </p>
+
+    <p>CASE FILE #001 · THE DAY META WENT DARK</p>
+
+    <p>© 2026 THE INTERNET FILES</p>
+
+    <a href="index.html">RETURN TO HOMEPAGE ↑</a>
+</footer>
+
+</body>
+</html>
